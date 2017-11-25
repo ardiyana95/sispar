@@ -12,10 +12,50 @@
 
 	<!-- Libs -->
 	<link rel="stylesheet" href="libs/SmartWizard-master/css/smart_wizard.css">
+    <script src="js/jquery.min.js" ></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="libs/SmartWizard-master/js/jquery.smartWizard.min.js"></script>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // Initialize the leaveStep event
+            $("#wizard").on("leaveStep", function(e, anchorObject, stepNumber, stepDirection) {
+                if (stepNumber >= 2) {
+                    document.getElementById("finish").disabled = false;
+                }
+                else {
+                    document.getElementById("finish").disabled = true;
+                }
+                // return confirm("Do you want to leave the step "+stepNumber+"?");
+            });
+            
+            // Toolbar extra buttons
+            var btnFinish = $('<button id="finish"></button>').text('Finish')
+                .addClass('btn btn-primary')
+                .on('click', function(){ alert('Finish Clicked'); });
+            var btnCancel = $('<button></button>').text('Cancel')
+                .addClass('btn btn-danger')
+                .on('click', function(){ $('#wizard').smartWizard("reset"); });                         
+            
+            
+            // Smart Wizard
+            $('#wizard').smartWizard({
+                transitionEffect:'fade',
+                selected: 0, 
+                theme: 'default',
+                showStepURLhash: true,
+                toolbarSettings: {
+                    toolbarPosition: 'bottom',
+                    toolbarButtonPosition: 'right',
+                     toolbarExtraButtons: [btnFinish, btnCancel]
+                }
+            });
+            document.getElementById("finish").disabled = true;
+        });
+    </script>
 </head>
 <body>
-	
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container">
 			<a class="navbar-brand" href="#">Expert System</a>
@@ -34,9 +74,6 @@
 					<li class="nav-item">
 						<a class="nav-link" href="#">Contact</a>
 					</li>	
-					<li class="nav-item">
-						<button type="button" class="btn btn-outline-primary">Try Now</button>
-					</li>
 				</ul>
 			</div>
 		</div>
@@ -49,217 +86,128 @@
 		</div>
 	</div>
 
-	    <div class="container">
+    <div class="container">
+        <form action="">
+            <!-- SmartWizard html -->
+            <div id="wizard">
+                <ul>
+                    <li><a href="#step-1">Step 1<br /><small>Masukan data diri anda</small></a></li>
+                    <li><a href="#step-2">Step 2<br /><small>Isi Pertanyaan</small></a></li>
+                    <li><a href="#step-3">Step 3<br /><small>This is step description</small></a></li>
+                </ul>
 
-        <!-- SmartWizard html -->
-        <div id="smartwizard">
-            <ul>
-                <li><a href="#step-1">Step 1<br /><small>Masukan data diri anda</small></a></li>
-                <li><a href="#step-2">Step 2<br /><small>Isi Pertanyaan</small></a></li>
-                <li><a href="#step-3">Step 3<br /><small>This is step description</small></a></li>
-            </ul>
-            
-            <div>
-                <div id="step-1" class="">
-                    <h2 class="lead">Step 1 Data Diri</h2>
-                    <form>
-						
-						<div class="form-group">
-                    		<label for="exampleInputPassword1">Nama Lengkap</label>
-                    		<input type="text" class="form-control" id="exampleInputPassword1">
-                    	</div>
+                <div>
+                    <div id="step-1" class="">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        </div>
 
-                    	<div class="form-group">
-                    		<label for="exampleInputEmail1">Alamat Email</label>
-                    		<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    	</div>
-                    	
-                    </form>
-                </div>
-                <div id="step-2" class="">
-                   <h2 class="lead">Step 2 Pertanyaan</h2>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Alamat Email</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>
+                    </div>
+                    <div id="step-2" class="">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Berapa Umur Anda</label>
+                            <input type="text" class="form-control" name="age">
+                        </div>
 
-                    <form>						
-						<div class="form-group">
-                    		<label for="exampleInputPassword1">Berapa Umur Anda</label>
-                    		<input type="text" class="form-control" name="age">
-                    	</div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Apakah Anda Meroko ?</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
+                                    Ya
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    Tidak
+                                </label>
+                            </div>
+                        </div>
 
-                    	<div class="form-group">
-                    		<label for="exampleInputEmail1">Apakah Anda Meroko ?</label>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
-                    				Ya
-                    			</label>
-                    		</div>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
-                    				Tidak
-                    			</label>
-                    		</div>
-                    	</div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Sudah berapa lama anda merokok ?</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        </div> 
 
-                    	<div class="form-group">
-                    		<label for="exampleInputPassword1">Sudah berapa lama anda merokok ?</label>
-                    		<input type="text" class="form-control" id="exampleInputPassword1">
-                    	</div> 
-                    	<div class="form-group">
-                    		<label for="exampleInputPassword1">Berapa jumlah batang rokok yang dihabiskan perhari ?</label>
-                    		<input type="text" class="form-control" id="exampleInputPassword1">
-                    	</div>    
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Berapa jumlah batang rokok yang dihabiskan perhari ?</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        </div>    
 
-						<div class="form-group">
-                    		<label for="exampleInputEmail1">Apakah anda berada dilingkungan yang sering terpapar rokok ?</label>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
-                    				Ya
-                    			</label>
-                    		</div>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
-                    				Tidak
-                    			</label>
-                    		</div>
-                    	</div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Apakah anda berada dilingkungan yang sering terpapar rokok ?</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
+                                    Ya
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    Tidak
+                                </label>
+                            </div>
+                        </div>
 
-                    	<div class="form-group">
-                    		<label for="exampleInputPassword1">Sudah berapa lama anda berada dilingkungan tersebut ?</label>
-                    		<input type="text" class="form-control" id="exampleInputPassword1">
-                    	</div> 
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Sudah berapa lama anda berada dilingkungan tersebut ?</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        </div> 
 
-                    	<div class="form-group">
-                    		<label for="exampleInputEmail1">Adakah anggota keluarga yang merupakan perokok ?</label>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
-                    				Ya
-                    			</label>
-                    		</div>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
-                    				Tidak
-                    			</label>
-                    		</div>
-                    	</div>						
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Adakah anggota keluarga yang merupakan perokok ?</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
+                                    Ya
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    Tidak
+                                </label>
+                            </div>
+                        </div>						
 
-                    	<div class="form-group">
-                    		<label for="exampleInputPassword1">Berapa jumlah anggota keluarga yang merokok ?</label>
-                    		<input type="text" class="form-control" id="exampleInputPassword1">
-                    	</div> 
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Berapa jumlah anggota keluarga yang merokok ?</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        </div> 
 
-                    	<div class="form-group">
-                    		<label for="exampleInputEmail1">Apakah anda sering berolahraga ?</label>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
-                    				Ya
-                    			</label>
-                    		</div>
-                    		<div class="form-check">
-                    			<label class="form-check-label">
-                    				<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
-                    				Tidak
-                    			</label>
-                    		</div>
-                    	</div>	
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Apakah anda sering berolahraga ?</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
+                                    Ya
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    Tidak
+                                </label>
+                            </div>
+                        </div>	
 
-                    	<div class="form-group">Seberapa banyak anda meminum air putih per hari (liter) ?Berapa jumlah anggota keluarga yang merokok ?</label>
-                    		<input type="text" class="form-control" id="exampleInputPassword1">
-                    	</div> 
-
-                    </form>
-                </div>
-                <div id="step-3" class="">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                        <div class="form-group">
+                            <label for="">Seberapa banyak anda meminum air putih per hari (liter) ?Berapa jumlah anggota keluarga yang merokok ?</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        </div> 
+                    </div>
+                    <div id="step-3" class="">
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        
-        
+        </form>
     </div>
-
-	<script src="js/jquery.min.js" ></script>
-	<script src="js/popper.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="libs/SmartWizard-master/js/jquery.smartWizard.min.js"></script>
- <script type="text/javascript">
-        $(document).ready(function(){
-            
-            // Step show event 
-            $("#smartwizard").on("showStep", function(e, anchorObject, stepNumber, stepDirection, stepPosition) {
-               //alert("You are on step "+stepNumber+" now");
-               if(stepPosition === 'first'){
-                   $("#prev-btn").addClass('disabled');
-               }else if(stepPosition === 'final'){
-                   $("#next-btn").addClass('disabled');
-               }else{
-                   $("#prev-btn").removeClass('disabled');
-                   $("#next-btn").removeClass('disabled');
-               }
-            });
-            
-            // Toolbar extra buttons
-            var btnFinish = $('<button></button>').text('Finish')
-                                             .addClass('btn btn-primary')
-                                             .on('click', function(){ alert('Finish Clicked'); });
-            var btnCancel = $('<button></button>').text('Cancel')
-                                             .addClass('btn btn-danger')
-                                             .on('click', function(){ $('#smartwizard').smartWizard("reset"); });                         
-            
-            
-            // Smart Wizard
-            $('#smartwizard').smartWizard({ 
-                    selected: 0, 
-                    theme: 'default',
-                    transitionEffect:'fade',
-                    showStepURLhash: true,
-                    toolbarSettings: {
-                    		toolbarPosition: 'bottom',
-                    		toolbarButtonPosition: 'right',
-                                      toolbarExtraButtons: [btnFinish, btnCancel]
-                                    }
-            });
-                                         
-            
-            // External Button Events
-            $("#reset-btn").on("click", function() {
-                // Reset wizard
-                $('#smartwizard').smartWizard("reset");
-                return true;
-            });
-            
-            $("#prev-btn").on("click", function() {
-                // Navigate previous
-                $('#smartwizard').smartWizard("prev");
-                return true;
-            });
-            
-            $("#next-btn").on("click", function() {
-                // Navigate next
-                $('#smartwizard').smartWizard("next");
-                return true;
-            });
-            
-            $("#theme_selector").on("change", function() {
-                // Change theme
-                $('#smartwizard').smartWizard("theme", $(this).val());
-                return true;
-            });
-            
-            // Set selected theme on page refresh
-            $("#theme_selector").change();
-        });   
-    </script>  
 </body>
 </html>
