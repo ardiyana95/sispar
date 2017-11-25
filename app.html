@@ -26,7 +26,7 @@
         $(document).ready(function(){
             // Initialize the leaveStep event
             $("#wizard").on("leaveStep", function(e, anchorObject, stepNumber, stepDirection) {
-                if (stepNumber >= 1 && stepDirection === "forward") {
+                if (stepNumber >= 0 && stepDirection === "forward") {
                     document.getElementById("finish").disabled = false;
                 }
                 else {
@@ -34,7 +34,6 @@
                 }
                 // return confirm("Do you want to leave the step "+stepNumber+"?");
 
-                debugger;
                 var elmForm = $("#step-" + stepNumber);
                 // stepDirection === 'forward' :- this condition allows to do the form validation 
                 // only on forward navigation, that makes easy navigation on backwards still do the validation when going next
@@ -77,12 +76,18 @@
             });
             
             // Toolbar extra buttons
-            var btnFinish = $('<button id="finish"></button>').text('Finish')
+            var btnFinish = $('<button id="finish" type="submit" name="submit"></button>').text('Finish')
                 .addClass('btn btn-primary')
-                .on('click', function(){ alert('Finish Clicked'); });
+                .on('click', function(){ 
+                    // alert('Finish Clicked'); 
+                    $('form').submit();
+                });
             var btnCancel = $('<button></button>').text('Cancel')
                 .addClass('btn btn-danger')
-                .on('click', function(){ $('#wizard').smartWizard("reset"); });                         
+                .on('click', function(){ 
+                    $('#wizard').smartWizard("reset"); 
+                    document.getElementById("finish").disabled = true;
+                });                         
             
             
             // Smart Wizard
@@ -176,13 +181,13 @@
 	</div>
 
     <div class="container">
-        <form action="#" id="myForm" role="form" data-toggle="validator" method="post" accept-charset="utf-8">
+        <form action="process.php" id="myForm" role="form" data-toggle="validator" method="post" accept-charset="utf-8">
             <!-- SmartWizard html -->
             <div id="wizard">
                 <ul>
                     <li><a href="#step-0">Step 1<br /><small>Masukan data diri anda</small></a></li>
                     <li><a href="#step-1">Step 2<br /><small>Isi Pertanyaan</small></a></li>
-                    <li><a href="#step-2">Step 3<br /><small>This is step description</small></a></li>
+                    <!-- <li><a href="#step-2">Step 3<br /><small>This is step description</small></a></li> -->
                 </ul>
 
                 <div>
@@ -201,7 +206,7 @@
 
                         <div class="form-group">
                             <label for="email">Alamat Email</label>
-                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required="true">
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required="true">
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
@@ -261,6 +266,7 @@
                         <div class="form-group" id="terpapar">
                             <label for="lamaTerpapar">Sudah berapa lama(tahun) anda berada dilingkungan tersebut?</label>
                             <input type="number" class="form-control" id="lamaTerpapar" name="lamaTerpapar" min="1">
+                            <div class="help-block with-errors"></div>
                         </div> 
 
                         <div class="form-group">
@@ -282,6 +288,7 @@
                         <div class="form-group" id="keluargaMerokok">
                             <label for="banyakKeluargaMerokok">Berapa jumlah anggota keluarga yang merokok?</label>
                             <input type="number" class="form-control" id="banyakKeluargaMerokok" name="banyakKeluargaMerokok" min="1">
+                            <div class="help-block with-errors"></div>
                         </div> 
 
                         <div class="form-group">
@@ -303,9 +310,10 @@
                         <div class="form-group">
                             <label for="minum">Seberapa banyak anda meminum air putih(liter) perhari?</label>
                             <input type="number" class="form-control" id="minum" name="minum" min="1" required="true">
+                            <div class="help-block with-errors"></div>
                         </div> 
                     </div>
-                    <div id="step-2"></div>
+                    <!-- <div id="step-2"></div> -->
                 </div>
             </div>
         </form>
