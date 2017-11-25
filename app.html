@@ -85,8 +85,9 @@
             var btnCancel = $('<button></button>').text('Cancel')
                 .addClass('btn btn-danger')
                 .on('click', function(){ 
-                    $('#wizard').smartWizard("reset"); 
+                    $('#wizard').smartWizard("reset");
                     document.getElementById("finish").disabled = true;
+                    $('#myForm').find("input, textarea").val("");
                 });                         
             
             
