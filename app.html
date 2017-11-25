@@ -21,13 +21,13 @@
         $(document).ready(function(){
             // Initialize the leaveStep event
             $("#wizard").on("leaveStep", function(e, anchorObject, stepNumber, stepDirection) {
-                if (stepNumber >= 2) {
+                if (stepNumber >= 1 && stepDirection === "forward") {
                     document.getElementById("finish").disabled = false;
                 }
                 else {
                     document.getElementById("finish").disabled = true;
                 }
-                // return confirm("Do you want to leave the step "+stepNumber+"?");
+                return confirm("Do you want to leave the step "+stepNumber+"?");
             });
             
             // Toolbar extra buttons
@@ -52,6 +52,49 @@
                 }
             });
             document.getElementById("finish").disabled = true;
+
+            //show sub question
+            $("#merokok").hide();
+            $("input[name$='rdRokok']").click(function() {
+                var merokok = $(this).val();
+
+                if (merokok === "ya") {
+                    $("#merokok").show();
+                    document.getElementById("lamaRokok").required = true;
+                    document.getElementById("banyakRokok").required = true;
+                } else {
+                    $("#merokok").hide();
+                    document.getElementById("lamaRokok").required = false;
+                    document.getElementById("banyakRokok").required = false;
+                }
+            });
+
+            $("#terpapar").hide();
+            $("input[name$='rdTerpapar']").click(function() {
+                var terpapar = $(this).val();
+
+                if (terpapar === "ya") {
+                    $("#terpapar").show();
+                    document.getElementById("lamaTerpapar").required = true;
+                } else {
+                    $("#terpapar").hide();
+                    document.getElementById("lamaTerpapar").required = false;
+                }
+            });
+
+            $("#keluargaMerokok").hide();
+            $("input[name$='rdKeluargaMerokok']").click(function() {
+                var keluargaMerokok = $(this).val();
+
+                if (keluargaMerokok === "ya") {
+                    $("#keluargaMerokok").show();
+                    document.getElementById("banyakKeluargaMerokok").required = true;
+                } else {
+                    $("#keluargaMerokok").hide();
+                    document.getElementById("banyakKeluargaMerokok").required = false;
+                }
+            });
+
         });
     </script>
 </head>
@@ -99,108 +142,115 @@
                 <div>
                     <div id="step-1" class="">
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1">
+                            <label for="id">Identitas</label>
+                            <input type="text" class="form-control" id="id" name="id" required="true">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Alamat Email</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <label for="name">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="name" name="name" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Alamat Email</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required="true">
                         </div>
                     </div>
                     <div id="step-2" class="">
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Berapa Umur Anda</label>
-                            <input type="text" class="form-control" name="age">
+                            <label for="age">Berapa umur anda?</label>
+                            <input type="number" class="form-control" name="age" name="age" min="3" required="true">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Apakah Anda Meroko ?</label>
+                            <label for="rdRokok">Apakah anda meroko?</label>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
+                                    <input class="form-check-input" type="radio" name="rdRokok" id="rdRokok" value="ya">
                                     Ya
                                 </label>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    <input class="form-check-input" type="radio" name="rdRokok" checked="true" id="rdRokok" value="tidak">
                                     Tidak
                                 </label>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Sudah berapa lama anda merokok ?</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1">
-                        </div> 
+                        <div id="merokok">
+                            <div class="form-group">
+                                <label for="lameRokok">Sudah berapa lama anda merokok?</label>
+                                <input type="number" class="form-control" id="lamaRokok" name="lamaRokok" min="1">
+                            </div> 
+
+                            <div class="form-group">
+                                <label for="banyakRokok">Berapa jumlah batang rokok yang dihabiskan perhari?</label>
+                                <input type="number" class="form-control" id="banyakRokok" name="banyakRokok" min="1">
+                            </div>    
+                        </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Berapa jumlah batang rokok yang dihabiskan perhari ?</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1">
-                        </div>    
-
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Apakah anda berada dilingkungan yang sering terpapar rokok ?</label>
+                            <label for="rdTerpapar">Apakah anda berada dilingkungan yang sering terpapar asap rokok?</label>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
+                                    <input class="form-check-input" type="radio" name="rdTerpapar" id="rdTerpapar" value="ya">
                                     Ya
                                 </label>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    <input class="form-check-input" type="radio" checked="true" name="rdTerpapar" id="rdTerpapar" value="tidak">
                                     Tidak
                                 </label>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Sudah berapa lama anda berada dilingkungan tersebut ?</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        <div class="form-group" id="terpapar">
+                            <label for="lamaTerpapar">Sudah berapa lama(tahun) anda berada dilingkungan tersebut?</label>
+                            <input type="number" class="form-control" id="lamaTerpapar" name="lamaTerpapar" min="1">
                         </div> 
 
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Adakah anggota keluarga yang merupakan perokok ?</label>
+                            <label for="rdKeluargaMerokok">Adakah anggota keluarga yang merupakan perokok?</label>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
-                                    Ya
+                                    <input class="form-check-input" type="radio" name="rdKeluargaMerokok" id="rdKeluargaMerokok" value="ya">
+                                    Ada
                                 </label>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    <input class="form-check-input" type="radio" checked="true" name="rdKeluargaMerokok" id="rdKeluargaMerokok" value="tidak">
                                     Tidak
                                 </label>
                             </div>
                         </div>						
 
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Berapa jumlah anggota keluarga yang merokok ?</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1">
+                        <div class="form-group" id="keluargaMerokok">
+                            <label for="banyakKeluargaMerokok">Berapa jumlah anggota keluarga yang merokok?</label>
+                            <input type="number" class="form-control" id="banyakKeluargaMerokok" name="banyakKeluargaMerokok" min="1">
                         </div> 
 
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Apakah anda sering berolahraga ?</label>
+                            <label for="rdOlahraga">Apakah anda sering berolahraga?</label>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ya">
+                                    <input class="form-check-input" type="radio" checked="true" name="rdOlahraga" id="rdOlahraga" value="ya">
                                     Ya
                                 </label>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="tidak">
+                                    <input class="form-check-input" type="radio" name="rdOlahraga" id="rdOlahraga" value="tidak">
                                     Tidak
                                 </label>
                             </div>
                         </div>	
 
                         <div class="form-group">
-                            <label for="">Seberapa banyak anda meminum air putih per hari (liter) ?Berapa jumlah anggota keluarga yang merokok ?</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1">
+                            <label for="minum">Seberapa banyak anda meminum air putih(liter) perhari?</label>
+                            <input type="number" class="form-control" id="minum" name="minum" min="1">
                         </div> 
                     </div>
                     <div id="step-3" class="">
