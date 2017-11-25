@@ -5,17 +5,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Applikasi Sistem Pakar</title>
 
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/magnific-popup.css">
-	<link rel="stylesheet" href="css/styles.css">
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap336.min.css">
+    <!-- Optional Bootstrap theme -->
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- Libs -->
-	<link rel="stylesheet" href="libs/SmartWizard-master/css/smart_wizard.css">
     <script src="js/jquery.min.js" ></script>
     <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
+    <!--Smart wizard-->
+    <link rel="stylesheet" href="libs/SmartWizard-master/css/smart_wizard.css">
+    <link rel="stylesheet" href="libs/SmartWizard-master/css/smart_wizard_theme_arrows.css">
     <script src="libs/SmartWizard-master/js/jquery.smartWizard.min.js"></script>
+    <script src="js/validator.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){
@@ -27,7 +32,48 @@
                 else {
                     document.getElementById("finish").disabled = true;
                 }
-                return confirm("Do you want to leave the step "+stepNumber+"?");
+                // return confirm("Do you want to leave the step "+stepNumber+"?");
+
+                debugger;
+                var elmForm = $("#step-" + stepNumber);
+                // stepDirection === 'forward' :- this condition allows to do the form validation 
+                // only on forward navigation, that makes easy navigation on backwards still do the validation when going next
+                if(stepDirection === 'forward' && elmForm){
+                    elmForm.validator('validate'); 
+                    var elmErr = elmForm.children('.has-error');
+                    if(elmErr && elmErr.length > 0){
+                        // Form validation failed
+                        return false;    
+                    }
+
+                    if (stepNumber == 1) {
+                        var elmForm = $("#merokok");
+                        elmForm.validator('validate'); 
+                        var elmErr = elmForm.children('.has-error');
+                        if(elmErr && elmErr.length > 0){
+                            // Form validation failed
+                            return false;    
+                        }
+
+                        var elmForm = $("#terpapar");
+                        elmForm.validator('validate'); 
+                        var elmErr = elmForm.children('.has-error');
+                        if(elmErr && elmErr.length > 0){
+                            // Form validation failed
+                            return false;    
+                        }
+
+                        var elmForm = $("#keluargaMerokok");
+                        elmForm.validator('validate'); 
+                        var elmErr = elmForm.children('.has-error');
+                        if(elmErr && elmErr.length > 0){
+                            // Form validation failed
+                            return false;    
+                        }
+                    }
+                }
+
+                return true;
             });
             
             // Toolbar extra buttons
@@ -43,7 +89,7 @@
             $('#wizard').smartWizard({
                 transitionEffect:'fade',
                 selected: 0, 
-                theme: 'default',
+                theme: 'arrows',
                 showStepURLhash: true,
                 toolbarSettings: {
                     toolbarPosition: 'bottom',
@@ -130,36 +176,40 @@
 	</div>
 
     <div class="container">
-        <form action="">
+        <form action="#" id="myForm" role="form" data-toggle="validator" method="post" accept-charset="utf-8">
             <!-- SmartWizard html -->
             <div id="wizard">
                 <ul>
-                    <li><a href="#step-1">Step 1<br /><small>Masukan data diri anda</small></a></li>
-                    <li><a href="#step-2">Step 2<br /><small>Isi Pertanyaan</small></a></li>
-                    <li><a href="#step-3">Step 3<br /><small>This is step description</small></a></li>
+                    <li><a href="#step-0">Step 1<br /><small>Masukan data diri anda</small></a></li>
+                    <li><a href="#step-1">Step 2<br /><small>Isi Pertanyaan</small></a></li>
+                    <li><a href="#step-2">Step 3<br /><small>This is step description</small></a></li>
                 </ul>
 
                 <div>
-                    <div id="step-1" class="">
+                    <div id="step-0">
                         <div class="form-group">
                             <label for="id">Identitas</label>
                             <input type="text" class="form-control" id="id" name="id" required="true">
+                            <div class="help-block with-errors"></div>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Nama Lengkap</label>
                             <input type="text" class="form-control" id="name" name="name" required="true">
+                            <div class="help-block with-errors"></div>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Alamat Email</label>
                             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required="true">
+                            <div class="help-block with-errors"></div>
                         </div>
                     </div>
-                    <div id="step-2" class="">
+                    <div id="step-1">
                         <div class="form-group">
                             <label for="age">Berapa umur anda?</label>
                             <input type="number" class="form-control" name="age" name="age" min="3" required="true">
+                            <div class="help-block with-errors"></div>
                         </div>
 
                         <div class="form-group">
@@ -180,13 +230,15 @@
 
                         <div id="merokok">
                             <div class="form-group">
-                                <label for="lameRokok">Sudah berapa lama anda merokok?</label>
+                                <label for="lameRokok">Sudah berapa lama(tahun) anda merokok?</label>
                                 <input type="number" class="form-control" id="lamaRokok" name="lamaRokok" min="1">
+                                <div class="help-block with-errors"></div>
                             </div> 
 
                             <div class="form-group">
                                 <label for="banyakRokok">Berapa jumlah batang rokok yang dihabiskan perhari?</label>
                                 <input type="number" class="form-control" id="banyakRokok" name="banyakRokok" min="1">
+                                <div class="help-block with-errors"></div>
                             </div>    
                         </div>
 
@@ -250,11 +302,10 @@
 
                         <div class="form-group">
                             <label for="minum">Seberapa banyak anda meminum air putih(liter) perhari?</label>
-                            <input type="number" class="form-control" id="minum" name="minum" min="1">
+                            <input type="number" class="form-control" id="minum" name="minum" min="1" required="true">
                         </div> 
                     </div>
-                    <div id="step-3" class="">
-                    </div>
+                    <div id="step-2"></div>
                 </div>
             </div>
         </form>
