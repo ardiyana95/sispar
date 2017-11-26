@@ -1,6 +1,11 @@
 <?php 
   require_once('userDb.php');
-  $UserDb     = new User();
+  require_once('diseaseDb.php');
+  $UserDb   = new User();
+  $DiseasesDb = new Diseases();
+  $diseases = '';
+  $user = '';
+  $perokok = false;
 
   if (isset($_POST['submit'])) {
     $UserDb->Id    = $_POST['id'];
@@ -21,9 +26,11 @@
       $merokok = $_POST['rdRokok'];
       $valueMerokok = 3; // bukan perokok
       $valueLamaRokok = 0;
+      
       $valueBanyakRokok = 0;
       if ($merokok == "ya") { 
         $valueMerokok = 30; // perokok
+        $perokok = true;
 
         $lamaRokok = $_POST['lamaRokok'];
         $valueLamaRokok = 8; // perokok > 10 thn
@@ -98,7 +105,9 @@
 
       $summary = $valueAge + $valueMerokok + $valueLamaRokok + $valueBanyakRokok + $valueTerpapar + $valueLamaTerpapar + $valueKeluargaMerokok + $valueBanyakKeluargaMerokok + $valueOlahraga + $valueMinum;
 
-      var_dump($summary);
+      //Get Data From Database
+      $diseases = $DiseasesDb->GetByValue($summary);
+      $user = mysqli_fetch_array($UserDb->GetById($_POST['id']));
     }
     else {
       echo "
@@ -118,6 +127,40 @@
   <link rel="stylesheet" href="">
 </head>
 <body>
-  
+  <label for=""><?php echo $user['ID']; ?></label> <br>
+  <label for=""><?php echo $user['Name']; ?></label> <br>
+  <label for=""><?php echo $user['Email']; ?></label> <br>
+  <table>
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Penyakit</th>
+        <th>Keterangan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php 
+        $no = 0;
+        while ($row = mysqli_fetch_array($diseases)) { ?>
+          <tr>
+            <td><?php echo $no = $no + 1; ?></td>    
+            <td><?php echo $row['Disease']; ?></td>    
+            <td><?php echo $row['Description']; ?></td>    
+          </tr>
+      <?php
+        }
+        if ($perokok) { ?>
+          <tr>
+            <td><?php echo $no = $no + 1; ?></td>
+            <td>Penyakit Jantung</td>
+            <td>Penyakit jantung meningkat hingga 25-30%.</td>
+          </tr>
+      <?php
+        }
+      ?>
+    </tbody>
+  </table>
+
+  <p><a href="penyuluhan.html">Click here</a> untuk mendapatkan penyuluhan!</p>
 </body>
 </html>
